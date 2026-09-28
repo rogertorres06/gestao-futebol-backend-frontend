@@ -12,8 +12,8 @@ export default function App() {
             fontFamily: 'Inter, system-ui, sans-serif'
         }}>
             <header style={{ marginBottom: '2.5rem', borderBottom: '1px solid #1e293b', paddingBottom: '1rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: '800', letterSpacing: '-0.025em', margin: 0 }}>
-                    Football Manager <span style={{ color: '#38bdf8', fontSize: '1rem', fontWeight: '500' }}>// Painel de Controlo</span>
+                <h1 style={{ color: '#ffffff', fontSize: '2rem', fontWeight: 'bold' }}>
+                    Football <span style={{ color: '#38bdf8' }}>Manager</span>
                 </h1>
                 <p style={{ color: '#94a3b8', marginTop: '0.5rem' }}>Gestão integrada de alta performance com Spring Boot & React</p>
             </header>

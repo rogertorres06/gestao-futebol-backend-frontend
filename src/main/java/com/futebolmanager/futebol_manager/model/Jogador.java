@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "tb_jogadores")
 @Getter
@@ -24,8 +26,20 @@ public class Jogador {
     private String posicao;
     private int overall;
 
+    @Column(name = "salario")
+    private BigDecimal salario;
+
+    @Column(name = "numero_camisa")
+    private Integer numeroCamisa;
+
+    @Column(nullable = false)
+    private Boolean titular = false;
+
+    @Column(name = "foto_url")
+    private String fotoUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "equipe_id")
-    @JsonIgnore // <-- Isto impede que o Jackson tente ler o proxy do Hibernate e rebente com erro
+    @JsonIgnore
     private Equipe equipe;
 }

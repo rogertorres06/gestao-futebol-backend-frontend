@@ -1,0 +1,2 @@
+ALTER TABLE tb_jogadores
+    ADD COLUMN IF NOT EXISTS salario NUMERIC(15, 2) DEFAULT 0.00;

@@ -14,6 +14,9 @@ export default function JogadorForm({ onJogadorCriado }: JogadorFormProps) {
         idade: '',
         posicao: '',
         overall: '',
+        salario: '',        // <-- Campo de salário incluído
+        numeroCamisa: '',
+        titular: false,
         equipeId: '',
         nomeEquipe: ''
     });
@@ -27,15 +30,20 @@ export default function JogadorForm({ onJogadorCriado }: JogadorFormProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            const salarioLimpo = Number(formData.salario.replace(/\D/g, ''));
+
             await criarJogador({
                 nome: formData.nome,
                 idade: Number(formData.idade),
                 posicao: formData.posicao,
                 overall: Number(formData.overall),
+                salario: isNaN(salarioLimpo) ? 0 : salarioLimpo, // <-- Salário enviado formatado
+                numeroCamisa: formData.numeroCamisa ? Number(formData.numeroCamisa) : undefined,
+                titular: formData.titular,
                 nomeEquipe: formData.nomeEquipe
             });
             onJogadorCriado();
-            setFormData({ nome: '', idade: '', posicao: '', overall: '', equipeId: '', nomeEquipe: '' });
+            setFormData({ nome: '', idade: '', posicao: '', overall: '', salario: '', numeroCamisa: '', titular: false, equipeId: '', nomeEquipe: '' });
         } catch (err) {
             console.error("Erro ao contratar jogador:", err);
         }
@@ -76,6 +84,42 @@ export default function JogadorForm({ onJogadorCriado }: JogadorFormProps) {
                 style={{ padding: '0.5rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', borderRadius: '0.375rem' }}
                 required
             />
+
+            {/* Input de Salário com formatação dinâmica */}
+            <div>
+                <input
+                    type="text"
+                    placeholder="Salário (ex: 1500000)"
+                    value={formData.salario}
+                    onChange={e => {
+                        const apenasNumeros = e.target.value.replace(/\D/g, '');
+                        setFormData({...formData, salario: apenasNumeros});
+                    }}
+                    style={{ width: '100%', padding: '0.5rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', borderRadius: '0.375rem', boxSizing: 'border-box' }}
+                />
+                <span style={{ fontSize: '0.75rem', color: '#38bdf8', marginTop: '0.25rem', display: 'block' }}>
+                    Valor real: R$ {formData.salario ? Number(formData.salario).toLocaleString('pt-BR') : '0'}
+                </span>
+            </div>
+
+            <input
+                type="number"
+                placeholder="Número da Camisa (ex: 10)"
+                value={formData.numeroCamisa}
+                onChange={e => setFormData({...formData, numeroCamisa: e.target.value})}
+                style={{ padding: '0.5rem', background: '#0f172a', border: '1px solid #334155', color: '#fff', borderRadius: '0.375rem' }}
+            />
+
+            <label style={{ color: '#f1f5f9', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', cursor: 'pointer' }}>
+                <input
+                    type="checkbox"
+                    checked={formData.titular}
+                    onChange={e => setFormData({...formData, titular: e.target.checked})}
+                    style={{ width: '16px', height: '16px', accentColor: '#38bdf8' }}
+                />
+                Atleta de Início (Titular Absoluto)
+            </label>
+
             <select
                 value={formData.nomeEquipe}
                 onChange={e => setFormData({...formData, nomeEquipe: e.target.value})}
@@ -93,7 +137,7 @@ export default function JogadorForm({ onJogadorCriado }: JogadorFormProps) {
                     background: '#38bdf8',
                     color: '#0f172a',
                     fontWeight: 'bold',
-                    height: '42px', // Altura fixa igualada ao outro botão
+                    height: '42px',
                     border: 'none',
                     borderRadius: '0.375rem',
                     cursor: 'pointer',

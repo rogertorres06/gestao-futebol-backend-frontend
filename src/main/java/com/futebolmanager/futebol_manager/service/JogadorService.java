@@ -8,6 +8,7 @@ import com.futebolmanager.futebol_manager.repository.JogadorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,10 @@ public class JogadorService {
         jogador.setPosicao(dto.getPosicao());
         jogador.setIdade(dto.getIdade());
         jogador.setOverall(dto.getOverall());
+        jogador.setSalario(dto.getSalario() != null ? dto.getSalario() : BigDecimal.ZERO);
+        jogador.setNumeroCamisa(dto.getNumeroCamisa());
+        jogador.setTitular(dto.getTitular());
+        jogador.setFotoUrl(dto.getFotoUrl());
         jogador.setEquipe(equipeValida);
 
         return jogadorRepository.save(jogador);
@@ -115,6 +120,14 @@ public class JogadorService {
         jogador.setPosicao(dto.getPosicao());
         jogador.setOverall(dto.getOverall());
         jogador.setIdade(dto.getIdade());
+
+        if (dto.getSalario() != null) {
+            jogador.setSalario(dto.getSalario()); // <-- ADICIONADO: Atualiza o salário se fornecido no DTO
+        }
+
+        jogador.setNumeroCamisa(dto.getNumeroCamisa());
+        jogador.setTitular(dto.getTitular());
+        jogador.setFotoUrl(dto.getFotoUrl());
 
         if (dto.getNomeEquipe() != null && !dto.getNomeEquipe().trim().isEmpty()) {
             Equipe equipeValida = equipeRepository.findByNome(dto.getNomeEquipe())

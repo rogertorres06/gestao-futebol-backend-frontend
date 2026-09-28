@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 public class JogadorRequestDTO {
 
     @NotBlank(message = "O nome do jogador não pode estar em branco.")
@@ -23,18 +25,20 @@ public class JogadorRequestDTO {
     @Max(value = 99, message = "O overall máximo é 99.")
     private Integer overall;
 
+    // ⚠️ CAMPO ADICIONADO:
+    private BigDecimal salario;
+
+    // Novos atributos de hierarquia
+    private Integer numeroCamisa;
+
+    @NotNull(message = "O estatuto de titularidade é obrigatório.")
+    private Boolean titular = false;
+
+    private String fotoUrl;
+
     @NotBlank(message = "O nome da equipe é obrigatório.")
     private String nomeEquipe;
 
-    public String getNomeEquipe() {
-        return nomeEquipe;
-    }
-
-    public void setNomeEquipe(String nomeEquipe) {
-        this.nomeEquipe = nomeEquipe;
-    }
-
-    // CONSTRUTOR VAZIO OBRIGATÓRIO PARA O JACKSON
     public JogadorRequestDTO() {
     }
 
@@ -51,5 +55,19 @@ public class JogadorRequestDTO {
     public Integer getOverall() { return overall; }
     public void setOverall(Integer overall) { this.overall = overall; }
 
+    // ⚠️ GETTER E SETTER ADICIONADOS:
+    public BigDecimal getSalario() { return salario; }
+    public void setSalario(BigDecimal salario) { this.salario = salario; }
 
+    public Integer getNumeroCamisa() { return numeroCamisa; }
+    public void setNumeroCamisa(Integer numeroCamisa) { this.numeroCamisa = numeroCamisa; }
+
+    public Boolean getTitular() { return titular; }
+    public void setTitular(Boolean titular) { this.titular = titular; }
+
+    public String getFotoUrl() { return fotoUrl; }
+    public void setFotoUrl(String fotoUrl) { this.fotoUrl = fotoUrl; }
+
+    public String getNomeEquipe() { return nomeEquipe; }
+    public void setNomeEquipe(String nomeEquipe) { this.nomeEquipe = nomeEquipe; }
 }
